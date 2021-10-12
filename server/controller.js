@@ -29,17 +29,31 @@ module.exports = {
         if(houses[index].price < 10000 && type ==='minus') {
             res.status(400).send("can't go below $10,000")
 
-        } else if(houses[index].price >= 10000 && type === 'plus') {
+        } else if(houses[index].price > 10000 && type === 'plus') {
             houses[index].price+= 10000
             res.status(200).send(houses)
 
-        } else if(houses[index].price >= 10000 && type === 'minus') {
+        } else if(houses[index].price > 10000 && type === 'minus') {
             houses[index].price-= 10000
             res.status(200).send(houses)
 
+        } else if(houses[index].price === 10000 && type === 'plus') {
+            houses[index].price+= 10000
+            res.status(200).send(houses)
+        } else if(houses[index].price === 10000 && type === 'minus') {
+                houses[index].price-= 10000
+                res.status(400).send("can't go below $10,000")
         } else {
             res.status(400).send
             ('Something went wrong')
         }
+    },
+    deleteHouse: (req, res) => {
+        const {id} = req.params
+
+        let index = houses.findIndex((elem) => +elem.id=== +id)
+
+        houses.splice(index, 1)
+        res.status(200).send(houses)
     }
 };
